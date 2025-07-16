@@ -9,23 +9,31 @@ const auth = require("./middleware/auth");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const allowedOrigins = ['https://pawar-tours-travel.vercel.app'];
+const cors = require('cors');
 
-//  CORS Configuration (allow frontend on Vercel)
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type,Authorization",
-  })
-);
+// Allow both local and deployed frontend URLs
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://pawar-tours-travel.vercel.app'
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g., mobile apps or curl/Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('Blocked by CORS:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+app.use(cors(corsOptions));
+
 
 // ✅ Body parser middleware
 app.use(express.json());
