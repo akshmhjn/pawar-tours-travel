@@ -6,6 +6,7 @@ const User = require("../models/User");
 const router = express.Router();
 
 // Register (Safe)
+// Register (one-time)
 router.post("/register", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -16,17 +17,18 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Username already exists" });
     }
 
-    // Create new user
+    // Hash password and save new user
     const hash = await bcrypt.hash(password, 10);
     const user = new User({ username, password: hash });
     await user.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.json({ message: "User registered successfully" });
   } catch (err) {
-    console.error("Registration Error:", err.message);
-    res.status(500).json({ message: "Server error during registration" });
+    console.error("Registration error:", err);
+    res.status(500).json({ message: "Registration failed" });
   }
 });
+
 
 // Login
 router.post("/login", async (req, res) => {

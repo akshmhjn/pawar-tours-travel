@@ -21,11 +21,17 @@ export default function AddTicket() {
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const submit = async (e) => {
-    e.preventDefault();
+const submit = async (e) => {
+  e.preventDefault();
+  try {
     await API.post("/tickets", form);
+    alert("🎫 Ticket added successfully!");
     nav("/tickets");
-  };
+  } catch (err) {
+    console.error("❌ Ticket submission error:", err.response?.data || err.message);
+    alert("❌ Failed to add ticket: " + (err.response?.data?.message || err.message));
+  }
+};
 
   const cancel = () => {
     if (window.confirm("Are you sure you want to cancel?")) {

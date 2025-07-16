@@ -7,16 +7,19 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const nav = useNavigate();
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      await API.post("/auth/register", { username, password });
-      alert("🎉 User registered successfully!");
-      nav("/");
-    } catch (err) {
-      alert("❌ Registration failed. Try a different username.");
-    }
-  };
+ const handleRegister = async (e) => {
+  e.preventDefault();
+  try {
+    await API.post("/auth/register", { username, password });
+    alert("🎉 User registered successfully!");
+    nav("/");
+  } catch (err) {
+    const errorMsg =
+      err.response?.data?.message || "❌ Registration failed. Try a different username.";
+    alert(errorMsg);
+  }
+};
+
 
   return (
     <div
