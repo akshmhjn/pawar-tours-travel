@@ -9,7 +9,7 @@ const auth = require("./middleware/auth");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const cors = require('cors');
+
 
 // Allow both local and deployed frontend URLs
 const allowedOrigins = [
