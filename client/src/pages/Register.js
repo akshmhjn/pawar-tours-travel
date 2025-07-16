@@ -11,11 +11,11 @@ export default function Register() {
   e.preventDefault();
   try {
     await API.post("/auth/register", { username, password });
-    alert("🎉 User registered successfully!");
+    alert(" User registered successfully!");
     nav("/");
   } catch (err) {
     const errorMsg =
-      err.response?.data?.message || "❌ Registration failed. Try a different username.";
+      err.response?.data?.message || " Registration failed. Try a different username.";
     alert(errorMsg);
   }
 };

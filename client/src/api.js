@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "https://pawar-tours-travel-backend.onrender.com/api",
+  withCredentials: true,
 });
 
 API.interceptors.request.use(config => {
