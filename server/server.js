@@ -23,10 +23,18 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "API is working" });
 });
 
+app.get("/api/auth/test", (req, res) => {
+  res.send("Auth route working!");
+});
+
+
 // Route Mounting
 app.use("/api/auth", authRoutes);        // ✅ /api/auth/*
 app.use("/api/tickets", auth, ticketRoutes);  // ✅ /api/tickets/* (protected)
-
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.url}`);
+  next();
+});
 // MongoDB Connection
 mongoose
   .connect(process.env.MONGODB_URI)
