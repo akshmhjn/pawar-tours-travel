@@ -8,13 +8,29 @@ const ticketRoutes = require("./routes/tickets");
 const auth = require("./middleware/auth");
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Routes
+app.get("/", (req, res) => {
+  res.send("Welcome to Pawar Tours & Travels API");
+});
+
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API is working" });
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tickets", auth, ticketRoutes);
 
+// MongoDB + Server Start
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then(() => app.listen(process.env.PORT || 5000, () => console.log("Server running")))
-  .catch(err => console.error(err));
+  .then(() => {
+    console.log("MongoDB connected");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch(err => console.error("MongoDB connection error:", err));
